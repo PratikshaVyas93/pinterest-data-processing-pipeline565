@@ -6,7 +6,7 @@ import logging.config
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 # Adding the packages required to get data from S3  
-os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages com.amazonaws:aws-java-sdk-s3:1.12.196,org.apache.hadoop:hadoop-aws:3.3.2 pyspark-shell"
+os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages com.amazonaws:aws-java-sdk-s3:1.12.196,org.apache.hadoop:hadoop-aws:3.3.1 pyspark-shell"
 
 #os.environ['PYSPARK_SUBMIT_ARGS']='--packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.100 pyspark-shell'
 # '--packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.100,org.apache.hadoop:hadoop-common:3.3.1'
