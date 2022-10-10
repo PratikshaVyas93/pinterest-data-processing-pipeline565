@@ -1,7 +1,5 @@
-from operator import sub
 import findspark
 import os
-
 from sqlalchemy import distinct
 findspark.init(os.environ.get('SPARK_HOME'))
 import logging
@@ -12,8 +10,6 @@ from pyspark.sql.functions import when, col, regexp_replace
 # Adding the packages required to get data from S3  
 os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages com.amazonaws:aws-java-sdk-s3:1.12.196,org.apache.hadoop:hadoop-aws:3.3.1,org.apache.hadoop:hadoop-common:3.3.1 pyspark-shell"
 
-#os.environ['PYSPARK_SUBMIT_ARGS']='--packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.100 pyspark-shell'
-# '--packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.100,org.apache.hadoop:hadoop-common:3.3.1'
 class Spark_Read_Write_Data():
     """
         This class is mainly used for receiving data from S3 nucket and store it in spark data frame locally and 
@@ -21,8 +17,8 @@ class Spark_Read_Write_Data():
     """
 
     def __init__(self) -> None:
+       
         # Creating our Spark configuration
-       # Creating our Spark configuration
         conf = SparkConf() \
             .setAppName('S3toSpark') \
             .setMaster('local[*]')
@@ -98,10 +94,6 @@ class Spark_Read_Write_Data():
         self.transform_spark_df()
 
 if __name__ == "__main__":
-
-    #logging.config.fileConfig(fname='../logging.config', disable_existing_loggers=False)
-    # Get the logger specified in the file
-    #logger = logging.getLogger(__name__)
     # Run class with it's object
     spark_obj = Spark_Read_Write_Data()
     spark_obj.run_spark_hbase()
