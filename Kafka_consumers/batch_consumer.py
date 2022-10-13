@@ -1,4 +1,3 @@
-from itertools import count
 from kafka import KafkaConsumer
 import json
 from json import loads, dumps, dump

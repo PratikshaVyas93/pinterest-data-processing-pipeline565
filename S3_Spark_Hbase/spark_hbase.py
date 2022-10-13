@@ -8,7 +8,7 @@ from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import when, col, regexp_replace
 # Adding the packages required to get data from S3  
-os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages com.amazonaws:aws-java-sdk-s3:1.12.196,org.apache.hadoop:hadoop-aws:3.3.1,org.apache.hadoop:hadoop-common:3.3.1 pyspark-shell"
+os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages com.amazonaws:aws-java-sdk-s3:1.12.196,org.apache.hadoop:hadoop-aws:3.3.1,org.apache.hadoop:hadoop-common:3.3.1,com.datastax.spark:spark-cassandra-connector_2.12:3.2.0 pyspark-shell"
 
 class Spark_Read_Write_Data():
     """
@@ -85,13 +85,28 @@ class Spark_Read_Write_Data():
                                 'save_location')
 
         self.df = self.df.distinct()
-        self.df.show(30)
-    
+        self.df.printSchema()
+        self.df.show(10)
+
+    def save_data_to_cassandra(self):
+        """
+            This method send data to cassandra table and store data into datastores for logtime purpose.
+        """
+        self.df.write\
+        .format("org.apache.spark.sql.cassandra")\
+        .mode("overwrite") \
+        .option("spark.cassandra.connection.host", "127.0.0.1") \
+        .option("spark.cassandra.connection.port", "9042") \
+        .option("confirm.truncate", "true") \
+        .options(keyspace="pinpipeline",table="pindatainfo")\
+        .save()
+
     def run_spark_hbase(self):
         """ This method create spark session- read data from S3 -Transform data-store into HBASE """
         #logger.info('This is a info message in spark hbase')
         self.read_data_from_S3()
         self.transform_spark_df()
+        self.save_data_to_cassandra()
 
 if __name__ == "__main__":
     # Run class with it's object
