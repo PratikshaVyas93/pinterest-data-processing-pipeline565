@@ -1,7 +1,7 @@
-import findspark
+#import findspark
 import os
 from sqlalchemy import distinct
-findspark.init(os.environ.get('SPARK_HOME'))
+#findspark.init(os.environ.get('SPARK_HOME'))
 import logging
 import logging.config
 from pyspark import SparkConf, SparkContext
@@ -98,7 +98,7 @@ class Spark_Read_Write_Data():
         .option("spark.cassandra.connection.host", "127.0.0.1") \
         .option("spark.cassandra.connection.port", "9042") \
         .option("confirm.truncate", "true") \
-        .options(keyspace="pinpipeline",table="pindatainfo")\
+        .options(keyspace="presto_cassandra",table="presto_pindatainfo")\
         .save()
 
     def run_spark_hbase(self):
